@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -32,10 +33,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private LatLng usuario;
     private List<MarkerOptions> markerOptions;
-    private LatLng coordenadas;
-    private Marker markerActual;
     private FloatingActionButton pregunta;
     private FloatingActionButton tienda;
+    private Marker markerActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         usuario = new LatLng(3.341683, -76.530434);
         mMap.addMarker(new MarkerOptions().position(usuario).title("Yo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(usuario));
-        mMap.getMinZoomLevel();
+
 
         MarkerOptions options = new MarkerOptions().title("Dificil")
                 .position(new LatLng(3.341200,-76.529392));
@@ -101,6 +101,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setOnMapClickListener(this);
 
+        //Agregar un listener de ubicacion
+        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mMap.clear();
+                for(int i=0;i<markerOptions.size();i++){
+                    mMap.addMarker(markerOptions.get(i));
+                }
+                usuario=new LatLng(location.getLatitude(),location.getLongitude());
+                markerActual =  mMap.addMarker(new MarkerOptions().position(usuario).title("Yo"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(usuario));
+                calcularCercano();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -110,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(LatLng latLng) {
-        coordenadas=latLng;
+
     }
 
     @SuppressLint("RestrictedApi")
