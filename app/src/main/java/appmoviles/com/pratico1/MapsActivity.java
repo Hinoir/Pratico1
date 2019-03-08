@@ -82,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         usuario = new LatLng(3.341683, -76.530434);
         mMap.addMarker(new MarkerOptions().position(usuario).title("Yo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(usuario));
-
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(usuario,20));
 
         MarkerOptions options = new MarkerOptions().title("Dificil")
                 .position(new LatLng(3.341200,-76.529392));
@@ -112,6 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 usuario=new LatLng(location.getLatitude(),location.getLongitude());
                 markerActual =  mMap.addMarker(new MarkerOptions().position(usuario).title("Yo"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(usuario));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(usuario,20));
                 calcularCercano();
             }
 
@@ -161,7 +162,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 indice=i;
             }
         }
-        float refCer = 100;
+        float refCer = 10;
         if(referencia<refCer) {
             //cercano.setText("El lugar mas cercano es: " + markerOptions.get(indice).getTitle() + " a " + referencia + " metros");
             if(markerOptions.get(indice).getTitle()=="Facil"){
