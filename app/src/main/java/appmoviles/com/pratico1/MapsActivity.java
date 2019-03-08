@@ -167,12 +167,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //cercano.setText("El lugar mas cercano es: " + markerOptions.get(indice).getTitle() + " a " + referencia + " metros");
             if(markerOptions.get(indice).getTitle()=="Facil"){
                 pregunta.show();
+                pregunta.callOnClick();
             }
             else if(markerOptions.get(indice).getTitle()=="Dificil"){
                 pregunta.show();
+                pregunta.callOnClick();
             }
             else if(markerOptions.get(indice).getTitle()=="Tienda"){
                 tienda.show();
+                tienda.callOnClick();
             }
             else{
                 pregunta.hide();
